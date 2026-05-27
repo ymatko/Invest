@@ -23,11 +23,9 @@ table 50100 "PTE Invest Setup"
         {
             Caption = 'Default Tax Year';
         }
-        field(40; "Exchange Rate Date Basis"; Option)
+        field(40; "Exchange Rate Date Basis"; Enum "PTE Exch. Rate Date Basis")
         {
             Caption = 'Exchange Rate Date Basis';
-            OptionCaption = 'Trade Date,Settlement Date';
-            OptionMembers = TradeDate,SettlementDate;
         }
         field(60; "Amount Rounding Precision"; Decimal)
         {

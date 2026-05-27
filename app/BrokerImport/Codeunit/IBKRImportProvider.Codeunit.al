@@ -286,38 +286,38 @@ codeunit 50113 "PTE IBKR Import Provider" implements "PTE Broker Report Provider
         exit(true);
     end;
 
-    local procedure MapTransactionType(SourceTransactionType: Text): Option Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other
+    local procedure MapTransactionType(SourceTransactionType: Text): Enum "PTE Broker Transaction Type"
     begin
         case NormalizeField(SourceTransactionType) of
             'BUY':
-                exit(0);
+                exit("PTE Broker Transaction Type"::Buy);
             'SELL':
-                exit(1);
+                exit("PTE Broker Transaction Type"::Sell);
             'DIVIDEND':
-                exit(2);
+                exit("PTE Broker Transaction Type"::Dividend);
             'INTEREST':
-                exit(3);
+                exit("PTE Broker Transaction Type"::Interest);
             'FEE':
-                exit(4);
+                exit("PTE Broker Transaction Type"::Fee);
             'TAX':
-                exit(5);
+                exit("PTE Broker Transaction Type"::Tax);
             'DEPOSIT', 'ELECTRONIC FUND TRANSFER':
-                exit(6);
+                exit("PTE Broker Transaction Type"::Deposit);
             'WITHDRAWAL':
-                exit(7);
+                exit("PTE Broker Transaction Type"::Withdrawal);
         end;
 
-        exit(8);
+        exit("PTE Broker Transaction Type"::Other);
     end;
 
-    local procedure MapInstrumentType(TransactionType: Option Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other; Symbol: Text): Option Stock,ETF,Bond,Fund,Cash,Other
+    local procedure MapInstrumentType(TransactionType: Enum "PTE Broker Transaction Type"; Symbol: Text): Enum "PTE Instrument Type"
     begin
         if Symbol = '' then
-            exit(4);
+            exit("PTE Instrument Type"::Cash);
         if TransactionType in [TransactionType::Buy, TransactionType::Sell, TransactionType::Dividend] then
-            exit(0);
+            exit("PTE Instrument Type"::Stock);
 
-        exit(5);
+        exit("PTE Instrument Type"::Other);
     end;
 
     local procedure BuildDuplicateCheckKey(ImportLine: Record "PTE Broker Import Line"): Text[250]

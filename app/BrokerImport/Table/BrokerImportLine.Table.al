@@ -19,11 +19,9 @@ table 50113 "PTE Broker Import Line"
             Caption = 'Selected';
             InitValue = true;
         }
-        field(20; Status; Option)
+        field(20; Status; Enum "PTE Broker Import Line Status")
         {
             Caption = 'Status';
-            OptionCaption = 'New,Valid,Error,Imported,Skipped';
-            OptionMembers = New,Valid,Error,Imported,Skipped;
         }
         field(30; "Validation Message"; Text[250])
         {
@@ -46,21 +44,17 @@ table 50113 "PTE Broker Import Line"
         {
             Caption = 'External Entry ID';
         }
-        field(70; "Transaction Type"; Option)
+        field(70; "Transaction Type"; Enum "PTE Broker Transaction Type")
         {
             Caption = 'Transaction Type';
-            OptionCaption = 'Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other';
-            OptionMembers = Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other;
         }
         field(80; "Source Transaction Type"; Text[50])
         {
             Caption = 'Source Transaction Type';
         }
-        field(90; "Instrument Type"; Option)
+        field(90; "Instrument Type"; Enum "PTE Instrument Type")
         {
             Caption = 'Instrument Type';
-            OptionCaption = 'Stock,ETF,Bond,Fund,Cash,Other';
-            OptionMembers = Stock,ETF,Bond,Fund,Cash,Other;
         }
         field(100; "Trade Date"; Date)
         {

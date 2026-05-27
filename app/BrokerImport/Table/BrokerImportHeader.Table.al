@@ -25,11 +25,9 @@ table 50112 "PTE Broker Import Header"
         {
             Caption = 'Source File Name';
         }
-        field(40; Status; Option)
+        field(40; Status; Enum "PTE Broker Import Status")
         {
             Caption = 'Status';
-            OptionCaption = 'Created,Validated,Imported,Failed,Partially Imported';
-            OptionMembers = Created,Validated,Imported,Failed,PartiallyImported;
         }
         field(50; "Report Title"; Text[100])
         {

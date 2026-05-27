@@ -24,11 +24,9 @@ table 50120 "PTE PIT Calculation"
         {
             Caption = 'Period End Date';
         }
-        field(40; Status; Option)
+        field(40; Status; Enum "PTE PIT Calculation Status")
         {
             Caption = 'Status';
-            OptionCaption = 'Created,Calculated';
-            OptionMembers = Created,Calculated;
         }
         field(50; "Created At"; DateTime)
         {

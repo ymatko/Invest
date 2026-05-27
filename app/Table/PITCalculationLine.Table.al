@@ -14,11 +14,9 @@ table 50121 "PTE PIT Calc. Line"
         {
             Caption = 'Line No.';
         }
-        field(10; "Line Type"; Option)
+        field(10; "Line Type"; Enum "PTE PIT Calc. Line Type")
         {
             Caption = 'Line Type';
-            OptionCaption = 'PIT-38,PIT/ZG,Summary,Warning';
-            OptionMembers = PIT38,PITZG,Summary,Warning;
         }
         field(20; "Form Name"; Code[20])
         {

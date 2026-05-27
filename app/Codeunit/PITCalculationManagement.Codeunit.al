@@ -122,7 +122,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
                 CountryCode := GetEntryCountryCode(BrokerEntry);
                 if CountryCode = '' then begin
                     WarningCount += 1;
-                    InsertLine(PITCalculation, 900000 + WarningCount, 3, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, BrokerEntry."Entry No.", BrokerEntry.Ticker, BrokerEntry.Description));
+                    InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, BrokerEntry."Entry No.", BrokerEntry.Ticker, BrokerEntry.Description));
                 end else
                     if CountryCode <> TaxCountryCode then begin
                         TaxableAmount := Abs(BrokerEntry."LCY Gross Amount") + Abs(BrokerEntry."LCY Tax Amount");
@@ -199,13 +199,13 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
 
         if UnmatchedQuantity > 0 then begin
             WarningCount += 1;
-            InsertLine(PITCalculation, 900000 + WarningCount, 3, 'CHECK', '', '', MissingBuyCostTxt, 0, '', StrSubstNo(UnmatchedQuantityTxt, InstrumentKey, UnmatchedQuantity));
+            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingBuyCostTxt, 0, '', StrSubstNo(UnmatchedQuantityTxt, InstrumentKey, UnmatchedQuantity));
         end;
 
         CountryCode := GetEntryCountryCode(SellEntry);
         if CountryCode = '' then begin
             WarningCount += 1;
-            InsertLine(PITCalculation, 900000 + WarningCount, 3, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, SellEntry."Entry No.", SellEntry.Ticker, SellEntry.Description));
+            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, SellEntry."Entry No.", SellEntry.Ticker, SellEntry.Description));
         end else
             if CountryCode <> TaxCountryCode then begin
                 SellIncome := Revenue - MatchedCost - SellCost;
@@ -296,30 +296,30 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
 
     local procedure InsertPIT38Lines(PITCalculation: Record "PTE PIT Calculation")
     begin
-        InsertLine(PITCalculation, 10000, 0, 'PIT-38', '', '20', 'Przychody wykazane w części D informacji PIT-8C', 0, '', NotCalculatedPIT8CTxt);
-        InsertLine(PITCalculation, 20000, 0, 'PIT-38', '', '21', 'Koszty uzyskania przychodów wykazane w PIT-8C', 0, '', NotCalculatedPIT8CTxt);
-        InsertLine(PITCalculation, 30000, 0, 'PIT-38', '', '22', 'Inne przychody', PITCalculation."PIT-38 Revenue", '', OtherIncomeTxt);
-        InsertLine(PITCalculation, 40000, 0, 'PIT-38', '', '23', 'Koszty uzyskania innych przychodów', PITCalculation."PIT-38 Costs", '', OtherIncomeTxt);
-        InsertLine(PITCalculation, 50000, 0, 'PIT-38', '', '24', 'Przychody zwolnione na podstawie art. 21 ust. 1 pkt 105a', 0, '', NotCalculatedExemptTxt);
-        InsertLine(PITCalculation, 60000, 0, 'PIT-38', '', '25', 'Koszty przychodów zwolnionych na podstawie art. 21 ust. 1 pkt 105a', 0, '', NotCalculatedExemptTxt);
-        InsertLine(PITCalculation, 70000, 0, 'PIT-38', '', '26', 'Razem przychody', PITCalculation."PIT-38 Revenue", '', 'poz. 20 + 22 - 24');
-        InsertLine(PITCalculation, 80000, 0, 'PIT-38', '', '27', 'Razem koszty uzyskania przychodów', PITCalculation."PIT-38 Costs", '', 'poz. 21 + 23 - 25');
-        InsertLine(PITCalculation, 90000, 0, 'PIT-38', '', '28', 'Dochód', PITCalculation."PIT-38 Income", '', 'max(poz. 26 - poz. 27, 0)');
-        InsertLine(PITCalculation, 100000, 0, 'PIT-38', '', '29', 'Strata', PITCalculation."PIT-38 Loss", '', 'max(poz. 27 - poz. 26, 0)');
-        InsertLine(PITCalculation, 110000, 0, 'PIT-38', '', '30', 'Straty z lat ubiegłych', PITCalculation."Prior Loss Deduction", '', 'Request page value');
-        InsertLine(PITCalculation, 120000, 0, 'PIT-38', '', '31', 'Podstawa obliczenia podatku', PITCalculation."Tax Base", '', 'poz. 28 - poz. 30, rounded to full PLN');
-        InsertLine(PITCalculation, 130000, 0, 'PIT-38', '', '32', 'Stawka podatku', PITCalculation."Tax Rate %", '%', 'Official PIT-38 rate for art. 30b');
-        InsertLine(PITCalculation, 140000, 0, 'PIT-38', '', '33', 'Podatek od dochodów art. 30b ust. 1', PITCalculation."Tax Before Foreign Tax", '', 'poz. 31 * poz. 32');
-        InsertLine(PITCalculation, 150000, 0, 'PIT-38', '', '34', 'Podatek zapłacony za granicą art. 30b ust. 5a i 5b', PITCalculation."Foreign Tax Paid", '', 'Sum from foreign sell entries');
-        InsertLine(PITCalculation, 160000, 0, 'PIT-38', '', '35', 'Podatek należny', PITCalculation."Securities Tax Due", '', 'max(poz. 33 - poz. 34, 0), rounded to full PLN');
-        InsertLine(PITCalculation, 170000, 0, 'PIT-38', '', '46', 'Zryczałtowany podatek dochodowy art. 29, art. 30 i art. 30a', 0, '', 'Not calculated by this report except foreign art. 30a below');
-        InsertLine(PITCalculation, 180000, 0, 'PIT-38', '', '47', 'Zryczałtowany podatek od przychodów art. 30a ust. 1 pkt 1-5 uzyskanych za granicą', PITCalculation."Flat Tax Before Foreign Tax", '', '19% from foreign dividends and interest');
-        InsertLine(PITCalculation, 190000, 0, 'PIT-38', '', '48', 'Podatek zapłacony za granicą art. 30a ust. 9', PITCalculation."Flat Foreign Tax Paid", '', 'Limited to poz. 47');
-        InsertLine(PITCalculation, 200000, 0, 'PIT-38', '', '49', 'Różnica między zryczałtowanym podatkiem a podatkiem zapłaconym za granicą', PITCalculation."Flat Tax Due", '', 'max(poz. 47 - poz. 48, 0), rounded to full PLN');
-        InsertLine(PITCalculation, 210000, 0, 'PIT-38', '', '50', 'Suma zaliczek przekazanych płatnikowi', 0, '', 'Not calculated by this report');
-        InsertLine(PITCalculation, 220000, 0, 'PIT-38', '', '51', 'Podatek do zapłaty', PITCalculation."Tax Due", '', 'poz. 35 + 45 + 46 + 49 - poz. 50');
-        InsertLine(PITCalculation, 230000, 0, 'PIT-38', '', '52', 'Nadpłata', 0, '', 'Not calculated by this report');
-        InsertLine(PITCalculation, 240000, 0, 'PIT-38', '', '72', 'PIT/ZG', PITCalculation."PIT-ZG Countries", '', 'Number of PIT/ZG attachments generated');
+        InsertLine(PITCalculation, 10000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '20', 'Przychody wykazane w części D informacji PIT-8C', 0, '', NotCalculatedPIT8CTxt);
+        InsertLine(PITCalculation, 20000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '21', 'Koszty uzyskania przychodów wykazane w PIT-8C', 0, '', NotCalculatedPIT8CTxt);
+        InsertLine(PITCalculation, 30000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '22', 'Inne przychody', PITCalculation."PIT-38 Revenue", '', OtherIncomeTxt);
+        InsertLine(PITCalculation, 40000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '23', 'Koszty uzyskania innych przychodów', PITCalculation."PIT-38 Costs", '', OtherIncomeTxt);
+        InsertLine(PITCalculation, 50000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '24', 'Przychody zwolnione na podstawie art. 21 ust. 1 pkt 105a', 0, '', NotCalculatedExemptTxt);
+        InsertLine(PITCalculation, 60000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '25', 'Koszty przychodów zwolnionych na podstawie art. 21 ust. 1 pkt 105a', 0, '', NotCalculatedExemptTxt);
+        InsertLine(PITCalculation, 70000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '26', 'Razem przychody', PITCalculation."PIT-38 Revenue", '', 'poz. 20 + 22 - 24');
+        InsertLine(PITCalculation, 80000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '27', 'Razem koszty uzyskania przychodów', PITCalculation."PIT-38 Costs", '', 'poz. 21 + 23 - 25');
+        InsertLine(PITCalculation, 90000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '28', 'Dochód', PITCalculation."PIT-38 Income", '', 'max(poz. 26 - poz. 27, 0)');
+        InsertLine(PITCalculation, 100000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '29', 'Strata', PITCalculation."PIT-38 Loss", '', 'max(poz. 27 - poz. 26, 0)');
+        InsertLine(PITCalculation, 110000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '30', 'Straty z lat ubiegłych', PITCalculation."Prior Loss Deduction", '', 'Request page value');
+        InsertLine(PITCalculation, 120000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '31', 'Podstawa obliczenia podatku', PITCalculation."Tax Base", '', 'poz. 28 - poz. 30, rounded to full PLN');
+        InsertLine(PITCalculation, 130000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '32', 'Stawka podatku', PITCalculation."Tax Rate %", '%', 'Official PIT-38 rate for art. 30b');
+        InsertLine(PITCalculation, 140000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '33', 'Podatek od dochodów art. 30b ust. 1', PITCalculation."Tax Before Foreign Tax", '', 'poz. 31 * poz. 32');
+        InsertLine(PITCalculation, 150000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '34', 'Podatek zapłacony za granicą art. 30b ust. 5a i 5b', PITCalculation."Foreign Tax Paid", '', 'Sum from foreign sell entries');
+        InsertLine(PITCalculation, 160000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '35', 'Podatek należny', PITCalculation."Securities Tax Due", '', 'max(poz. 33 - poz. 34, 0), rounded to full PLN');
+        InsertLine(PITCalculation, 170000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '46', 'Zryczałtowany podatek dochodowy art. 29, art. 30 i art. 30a', 0, '', 'Not calculated by this report except foreign art. 30a below');
+        InsertLine(PITCalculation, 180000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '47', 'Zryczałtowany podatek od przychodów art. 30a ust. 1 pkt 1-5 uzyskanych za granicą', PITCalculation."Flat Tax Before Foreign Tax", '', '19% from foreign dividends and interest');
+        InsertLine(PITCalculation, 190000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '48', 'Podatek zapłacony za granicą art. 30a ust. 9', PITCalculation."Flat Foreign Tax Paid", '', 'Limited to poz. 47');
+        InsertLine(PITCalculation, 200000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '49', 'Różnica między zryczałtowanym podatkiem a podatkiem zapłaconym za granicą', PITCalculation."Flat Tax Due", '', 'max(poz. 47 - poz. 48, 0), rounded to full PLN');
+        InsertLine(PITCalculation, 210000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '50', 'Suma zaliczek przekazanych płatnikowi', 0, '', 'Not calculated by this report');
+        InsertLine(PITCalculation, 220000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '51', 'Podatek do zapłaty', PITCalculation."Tax Due", '', 'poz. 35 + 45 + 46 + 49 - poz. 50');
+        InsertLine(PITCalculation, 230000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '52', 'Nadpłata', 0, '', 'Not calculated by this report');
+        InsertLine(PITCalculation, 240000, "PTE PIT Calc. Line Type"::PIT38, 'PIT-38', '', '72', 'PIT/ZG', PITCalculation."PIT-ZG Countries", '', 'Number of PIT/ZG attachments generated');
     end;
 
     local procedure InsertPITZGLines(PITCalculation: Record "PTE PIT Calculation"; CountryIncome: Dictionary of [Code[10], Decimal]; CountryTax: Dictionary of [Code[10], Decimal])
@@ -331,11 +331,11 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         foreach CountryCode in CountryIncome.Keys() do begin
             CountryNo += 1;
             LineNo := 300000 + (CountryNo * 10000);
-            InsertLine(PITCalculation, LineNo + 1000, 1, 'PIT/ZG', CountryCode, '6', 'Państwo uzyskania dochodu / przychodu', 0, CountryCode, 'Separate PIT/ZG attachment for this country');
-            InsertLine(PITCalculation, LineNo + 2000, 1, 'PIT/ZG', CountryCode, '29', 'Dochód, o którym mowa w art. 30b ust. 5a i 5b ustawy', RoundPositive(CountryIncome.Get(CountryCode)), '', 'Foreign income from securities sales');
-            InsertLine(PITCalculation, LineNo + 3000, 1, 'PIT/ZG', CountryCode, '30', 'Podatek zapłacony za granicą od dochodów z poz. 29', RoundAmount(GetCountryAmount(CountryTax, CountryCode)), '', 'Foreign tax paid from sell entries');
-            InsertLine(PITCalculation, LineNo + 4000, 1, 'PIT/ZG', CountryCode, '31', 'Dochód, o którym mowa w art. 30b ust. 5e i 5f ustawy', 0, '', 'Not calculated by this report');
-            InsertLine(PITCalculation, LineNo + 5000, 1, 'PIT/ZG', CountryCode, '32', 'Podatek zapłacony za granicą od dochodów z poz. 31', 0, '', 'Not calculated by this report');
+            InsertLine(PITCalculation, LineNo + 1000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '6', 'Państwo uzyskania dochodu / przychodu', 0, CountryCode, 'Separate PIT/ZG attachment for this country');
+            InsertLine(PITCalculation, LineNo + 2000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '29', 'Dochód, o którym mowa w art. 30b ust. 5a i 5b ustawy', RoundPositive(CountryIncome.Get(CountryCode)), '', 'Foreign income from securities sales');
+            InsertLine(PITCalculation, LineNo + 3000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '30', 'Podatek zapłacony za granicą od dochodów z poz. 29', RoundAmount(GetCountryAmount(CountryTax, CountryCode)), '', 'Foreign tax paid from sell entries');
+            InsertLine(PITCalculation, LineNo + 4000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '31', 'Dochód, o którym mowa w art. 30b ust. 5e i 5f ustawy', 0, '', 'Not calculated by this report');
+            InsertLine(PITCalculation, LineNo + 5000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '32', 'Podatek zapłacony za granicą od dochodów z poz. 31', 0, '', 'Not calculated by this report');
         end;
     end;
 
@@ -422,7 +422,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         TempExcelBuffer.AddColumn('Note', false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
     end;
 
-    local procedure InsertLine(PITCalculation: Record "PTE PIT Calculation"; LineNo: Integer; LineType: Option PIT38,PITZG,Summary,Warning; FormName: Code[20]; CountryCode: Code[10]; FieldNo: Code[20]; FieldCaption: Text[250]; Amount: Decimal; TextValue: Text[250]; Note: Text[250])
+    local procedure InsertLine(PITCalculation: Record "PTE PIT Calculation"; LineNo: Integer; LineType: Enum "PTE PIT Calc. Line Type"; FormName: Code[20]; CountryCode: Code[10]; FieldNo: Code[20]; FieldCaption: Text[250]; Amount: Decimal; TextValue: Text[250]; Note: Text[250])
     var
         PITCalcLine: Record "PTE PIT Calc. Line";
     begin

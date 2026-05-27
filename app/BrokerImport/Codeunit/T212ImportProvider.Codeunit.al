@@ -349,34 +349,34 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
         exit(Evaluate(DecimalValue, Value, 9));
     end;
 
-    local procedure MapTransactionType(Action: Text): Option Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other
+    local procedure MapTransactionType(Action: Text): Enum "PTE Broker Transaction Type"
     begin
         case NormalizeField(Action) of
             'MARKET BUY':
-                exit(0);
+                exit("PTE Broker Transaction Type"::Buy);
             'MARKET SELL':
-                exit(1);
+                exit("PTE Broker Transaction Type"::Sell);
             'DIVIDEND (DIVIDEND)':
-                exit(2);
+                exit("PTE Broker Transaction Type"::Dividend);
             'LENDING INTEREST':
-                exit(3);
+                exit("PTE Broker Transaction Type"::Interest);
             'DEPOSIT':
-                exit(6);
+                exit("PTE Broker Transaction Type"::Deposit);
             'WITHDRAWAL':
-                exit(7);
+                exit("PTE Broker Transaction Type"::Withdrawal);
         end;
 
-        exit(8);
+        exit("PTE Broker Transaction Type"::Other);
     end;
 
-    local procedure MapInstrumentType(Action: Text; Symbol: Text): Option Stock,ETF,Bond,Fund,Cash,Other
+    local procedure MapInstrumentType(Action: Text; Symbol: Text): Enum "PTE Instrument Type"
     begin
         if Symbol = '' then
-            exit(4);
+            exit("PTE Instrument Type"::Cash);
         if NormalizeField(Action) in ['MARKET BUY', 'MARKET SELL', 'DIVIDEND (DIVIDEND)', 'TRANSFER OUT'] then
-            exit(0);
+            exit("PTE Instrument Type"::Stock);
 
-        exit(5);
+        exit("PTE Instrument Type"::Other);
     end;
 
     local procedure BuildDuplicateCheckKey(ImportLine: Record "PTE Broker Import Line"): Text[250]

@@ -39,21 +39,17 @@ table 50102 "PTE Broker Entry"
         {
             Caption = 'Broker Account No.';
         }
-        field(30; "Transaction Type"; Option)
+        field(30; "Transaction Type"; Enum "PTE Broker Transaction Type")
         {
             Caption = 'Transaction Type';
-            OptionCaption = 'Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other';
-            OptionMembers = Buy,Sell,Dividend,Interest,Fee,Tax,Deposit,Withdrawal,Other;
         }
         field(35; "Source Transaction Type"; Text[50])
         {
             Caption = 'Source Transaction Type';
         }
-        field(40; "Instrument Type"; Option)
+        field(40; "Instrument Type"; Enum "PTE Instrument Type")
         {
             Caption = 'Instrument Type';
-            OptionCaption = 'Stock,ETF,Bond,Fund,Cash,Other';
-            OptionMembers = Stock,ETF,Bond,Fund,Cash,Other;
         }
         field(50; "Trade Date"; Date)
         {
