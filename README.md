@@ -4,6 +4,8 @@ Invest is an AL extension for Microsoft Dynamics 365 Business Central that helps
 
 The app is designed as a self-contained public project. It does not depend on a separate FX Rate extension.
 
+![Investment Manager role center](docs/images/invest-role-center.png)
+
 ## Features
 
 - Broker statement import with preview and validation.
@@ -17,6 +19,12 @@ The app is designed as a self-contained public project. It does not depend on a 
 - Excel and ZIP export for PIT calculation results.
 - `Investment Manager` role center for the main workflow.
 
+## Brokers
+
+Create brokers for the accounts you want to import. Each broker defines the import provider, base currency, account identifier, and whether the broker is active for new imports.
+
+![Broker setup list](docs/images/brokers.png)
+
 ## Exchange Rates
 
 Invest stores imported rates in the standard `Currency Exchange Rate` table. For each currency, select an `Exchange Rate Source`:
@@ -28,6 +36,24 @@ Invest stores imported rates in the standard `Currency Exchange Rate` table. For
 | NBP | National Bank of Poland |
 
 Then run `Import Exchange Rates` for the required period. HTTP client requests must be enabled for the extension before online exchange rate import can run.
+
+## Broker Imports
+
+Broker reports are first loaded into a preview document. The import keeps the original source context, validates rows, shows errors, and lets you import only valid lines into permanent broker entries.
+
+![Broker import preview](docs/images/broker-import.png)
+
+## Broker Entries
+
+After import, transactions are stored as broker entries. These entries are the working ledger for investment transactions and the source for PIT calculations.
+
+![Broker entries list](docs/images/broker-entries.png)
+
+## PIT Calculation
+
+Run `Calculate PIT` to create a PIT calculation for a selected tax year and period. The result stores PIT-38 values, PIT/ZG lines when foreign income exists, warnings, and export actions.
+
+![PIT calculation card](docs/images/pit-calculation.png)
 
 ## Typical Workflow
 
