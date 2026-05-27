@@ -1,0 +1,13 @@
+**/.alpackages/
+**/.alcache/
+**/.snapshots/
+*.app
+*.runtimepackage
+
+**/.vscode/
+
+*.csv
+
+Thumbs.db
+Desktop.ini
+.DS_Store

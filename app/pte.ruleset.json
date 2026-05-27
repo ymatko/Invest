@@ -1,0 +1,11 @@
+{
+    "name": "PTE Invest Ruleset",
+    "description": "Ruleset for the PTE Invest local extension.",
+    "rules": [
+        {
+            "id": "AA0215",
+            "action": "None",
+            "justification": "File names intentionally omit the object prefix because CRS removes the PTE prefix from file names."
+        }
+    ]
+}
