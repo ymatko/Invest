@@ -1,13 +1,13 @@
 enum 50101 "PTE Exch. Rate Date Basis"
 {
-    Caption = 'Exchange Rate Date Basis', Locked = true;
+    Caption = 'Exchange Rate Date Basis';
 
     value(0; TradeDate)
     {
-        Caption = 'Trade Date', Locked = true;
+        Caption = 'Trade Date';
     }
     value(1; SettlementDate)
     {
-        Caption = 'Settlement Date', Locked = true;
+        Caption = 'Settlement Date';
     }
 }

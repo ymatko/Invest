@@ -1,6 +1,6 @@
 enum 50107 "PTE PIT Calc. Line Type"
 {
-    Caption = 'PIT Calculation Line Type', Locked = true;
+    Caption = 'PIT Calculation Line Type';
 
     value(0; PIT38)
     {
@@ -12,10 +12,10 @@ enum 50107 "PTE PIT Calc. Line Type"
     }
     value(2; Summary)
     {
-        Caption = 'Summary', Locked = true;
+        Caption = 'Summary';
     }
     value(3; Warning)
     {
-        Caption = 'Warning', Locked = true;
+        Caption = 'Warning';
     }
 }

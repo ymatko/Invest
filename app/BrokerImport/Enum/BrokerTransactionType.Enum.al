@@ -1,41 +1,41 @@
 enum 50104 "PTE Broker Transaction Type"
 {
-    Caption = 'Broker Transaction Type', Locked = true;
+    Caption = 'Broker Transaction Type';
 
     value(0; Buy)
     {
-        Caption = 'Buy', Locked = true;
+        Caption = 'Buy';
     }
     value(1; Sell)
     {
-        Caption = 'Sell', Locked = true;
+        Caption = 'Sell';
     }
     value(2; Dividend)
     {
-        Caption = 'Dividend', Locked = true;
+        Caption = 'Dividend';
     }
     value(3; Interest)
     {
-        Caption = 'Interest', Locked = true;
+        Caption = 'Interest';
     }
     value(4; Fee)
     {
-        Caption = 'Fee', Locked = true;
+        Caption = 'Fee';
     }
     value(5; Tax)
     {
-        Caption = 'Tax', Locked = true;
+        Caption = 'Tax';
     }
     value(6; Deposit)
     {
-        Caption = 'Deposit', Locked = true;
+        Caption = 'Deposit';
     }
     value(7; Withdrawal)
     {
-        Caption = 'Withdrawal', Locked = true;
+        Caption = 'Withdrawal';
     }
     value(8; Other)
     {
-        Caption = 'Other', Locked = true;
+        Caption = 'Other';
     }
 }

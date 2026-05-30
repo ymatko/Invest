@@ -1,25 +1,25 @@
 enum 50102 "PTE Broker Import Status"
 {
-    Caption = 'Broker Import Status', Locked = true;
+    Caption = 'Broker Import Status';
 
     value(0; Created)
     {
-        Caption = 'Created', Locked = true;
+        Caption = 'Created';
     }
     value(1; Validated)
     {
-        Caption = 'Validated', Locked = true;
+        Caption = 'Validated';
     }
     value(2; Imported)
     {
-        Caption = 'Imported', Locked = true;
+        Caption = 'Imported';
     }
     value(3; Failed)
     {
-        Caption = 'Failed', Locked = true;
+        Caption = 'Failed';
     }
     value(4; PartiallyImported)
     {
-        Caption = 'Partially Imported', Locked = true;
+        Caption = 'Partially Imported';
     }
 }

@@ -122,7 +122,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
                 CountryCode := GetEntryCountryCode(BrokerEntry);
                 if CountryCode = '' then begin
                     WarningCount += 1;
-                    InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, BrokerEntry."Entry No.", BrokerEntry.Ticker, BrokerEntry.Description));
+                    InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', StrSubstNo(MissingCountryTxt, BrokerEntry."Entry No."), 0, BrokerEntry.Ticker, StrSubstNo(MissingCountryNoteTxt, BrokerEntry."Entry No.", BrokerEntry.Ticker, BrokerEntry.Description));
                 end else
                     if CountryCode <> TaxCountryCode then begin
                         TaxableAmount := Abs(BrokerEntry."LCY Gross Amount") + Abs(BrokerEntry."LCY Tax Amount");
@@ -199,13 +199,13 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
 
         if UnmatchedQuantity > 0 then begin
             WarningCount += 1;
-            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingBuyCostTxt, 0, '', StrSubstNo(UnmatchedQuantityTxt, InstrumentKey, UnmatchedQuantity));
+            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', StrSubstNo(MissingBuyCostTxt, InstrumentKey), 0, Format(UnmatchedQuantity), StrSubstNo(UnmatchedQuantityTxt, InstrumentKey, UnmatchedQuantity, SellEntry."Entry No.", SellEntry."Trade Date"));
         end;
 
         CountryCode := GetEntryCountryCode(SellEntry);
         if CountryCode = '' then begin
             WarningCount += 1;
-            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', MissingCountryTxt, 0, '', StrSubstNo(MissingCountryNoteTxt, SellEntry."Entry No.", SellEntry.Ticker, SellEntry.Description));
+            InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', StrSubstNo(MissingCountryTxt, SellEntry."Entry No."), 0, SellEntry.Ticker, StrSubstNo(MissingCountryNoteTxt, SellEntry."Entry No.", SellEntry.Ticker, SellEntry.Description));
         end else
             if CountryCode <> TaxCountryCode then begin
                 SellIncome := Revenue - MatchedCost - SellCost;
@@ -537,10 +537,10 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         StartDateRequiredErr: Label 'Period start date must be specified.';
         EndDateRequiredErr: Label 'Period end date must be specified.';
         InvalidPeriodErr: Label 'Period start date cannot be later than period end date.';
-        MissingBuyCostTxt: Label 'Missing acquisition cost';
-        MissingCountryTxt: Label 'Missing tax country';
-        MissingCountryNoteTxt: Label 'Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code or Instrument Tax Countries.', Comment = '%1 = broker entry number, %2 = ticker, %3 = description';
-        UnmatchedQuantityTxt: Label 'Not enough buy quantity was found for %1. Unmatched quantity: %2.', Comment = '%1 = instrument key, %2 = unmatched quantity';
+        MissingBuyCostTxt: Label 'Missing acquisition cost for %1', Comment = '%1 = instrument key';
+        MissingCountryTxt: Label 'Missing tax country for broker entry %1', Comment = '%1 = broker entry number';
+        MissingCountryNoteTxt: Label 'Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code on the broker entry or add a mapping in Instrument Tax Countries. The entry is not included in PIT/ZG country grouping until this is fixed.', Comment = '%1 = broker entry number, %2 = ticker, %3 = description';
+        UnmatchedQuantityTxt: Label 'Not enough buy quantity was found for %1. Unmatched quantity: %2. Sell broker entry: %3, trade date: %4. Import the missing buy transaction or correct the broker entry before relying on the PIT result.', Comment = '%1 = instrument key, %2 = unmatched quantity, %3 = broker entry number, %4 = trade date';
         PITArchiveFileNameTxt: Label 'PIT_%1_%2.zip', Comment = '%1 = tax year, %2 = PIT calculation entry number';
         PIT38FileNameTxt: Label 'PIT-38_%1_%2', Comment = '%1 = tax year, %2 = PIT calculation entry number';
         PITZGFileNameTxt: Label 'PIT-ZG_%1_%2', Comment = '%1 = tax year, %2 = PIT calculation entry number';

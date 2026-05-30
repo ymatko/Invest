@@ -1,6 +1,6 @@
 enum 50100 "PTE Exch. Rate Source"
 {
-    Caption = 'Exchange Rate Source', Locked = true;
+    Caption = 'Exchange Rate Source';
 
     value(0; " ")
     {
@@ -8,14 +8,14 @@ enum 50100 "PTE Exch. Rate Source"
     }
     value(10; ECB)
     {
-        Caption = 'European Central Bank', Locked = true;
+        Caption = 'European Central Bank';
     }
     value(20; NBU)
     {
-        Caption = 'National Bank of Ukraine', Locked = true;
+        Caption = 'National Bank of Ukraine';
     }
     value(30; NBP)
     {
-        Caption = 'National Bank of Poland', Locked = true;
+        Caption = 'National Bank of Poland';
     }
 }

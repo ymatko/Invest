@@ -1,29 +1,29 @@
 enum 50105 "PTE Instrument Type"
 {
-    Caption = 'Instrument Type', Locked = true;
+    Caption = 'Instrument Type';
 
     value(0; Stock)
     {
-        Caption = 'Stock', Locked = true;
+        Caption = 'Stock';
     }
     value(1; ETF)
     {
-        Caption = 'ETF', Locked = true;
+        Caption = 'ETF';
     }
     value(2; Bond)
     {
-        Caption = 'Bond', Locked = true;
+        Caption = 'Bond';
     }
     value(3; Fund)
     {
-        Caption = 'Fund', Locked = true;
+        Caption = 'Fund';
     }
     value(4; Cash)
     {
-        Caption = 'Cash', Locked = true;
+        Caption = 'Cash';
     }
     value(5; Other)
     {
-        Caption = 'Other', Locked = true;
+        Caption = 'Other';
     }
 }
