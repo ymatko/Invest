@@ -48,6 +48,7 @@ permissionset 50100 "PTE Invest"
         page "PTE Instrument Tax Countries" = X,
         page "PTE Invest Role Center" = X,
         page "PTE Invest Activities" = X,
+        page "PTE Latest Exchange Rates" = X,
         page "Currency Card" = X,
         page Currencies = X,
         page "Currency Exchange Rates" = X;

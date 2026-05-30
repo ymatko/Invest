@@ -7,9 +7,18 @@ page 50104 "PTE Invest Role Center"
     {
         area(RoleCenter)
         {
-            part(Activities; "PTE Invest Activities")
+            group(InvestOverview)
             {
-                ApplicationArea = All;
+                ShowCaption = false;
+
+                part(Activities; "PTE Invest Activities")
+                {
+                    ApplicationArea = All;
+                }
+                part(LatestExchangeRates; "PTE Latest Exchange Rates")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }
@@ -118,9 +127,10 @@ page 50104 "PTE Invest Role Center"
             action(ImportFXRates)
             {
                 ApplicationArea = All;
-                Caption = 'Import Exchange Rates';
+                Caption = 'Update Exchange Rates';
+                Image = RefreshLines;
                 RunObject = report "PTE Import Exchange Rates";
-                ToolTip = 'Import exchange rates by using the source selected on currency cards.';
+                ToolTip = 'Import or update exchange rates by using the sources selected on currency cards.';
             }
             action(CalculatePIT)
             {

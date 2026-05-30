@@ -36,5 +36,11 @@ pageextension 50100 "PTE Currency Card" extends "Currency Card"
                 end;
             }
         }
+        addlast(Promoted)
+        {
+            actionref(PTEImportExchangeRates_Promoted; PTEImportExchangeRates)
+            {
+            }
+        }
     }
 }

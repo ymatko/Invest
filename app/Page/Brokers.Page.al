@@ -74,5 +74,19 @@ page 50102 "PTE Brokers"
                 ToolTip = 'Open broker report imports for the selected broker.';
             }
         }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(Entries_Promoted; Entries)
+                {
+                }
+                actionref(Imports_Promoted; Imports)
+                {
+                }
+            }
+        }
     }
 }

@@ -106,5 +106,22 @@ page 50120 "PTE PIT Calculations"
                 end;
             }
         }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(ExportPITArchive_Promoted; ExportPITArchive)
+                {
+                }
+                actionref(ExportPIT38_Promoted; ExportPIT38)
+                {
+                }
+                actionref(ExportPITZG_Promoted; ExportPITZG)
+                {
+                }
+            }
+        }
     }
 }

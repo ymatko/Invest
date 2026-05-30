@@ -89,5 +89,19 @@ page 50101 "PTE Broker Card"
                 ToolTip = 'Open broker report imports for this broker.';
             }
         }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(Entries_Promoted; Entries)
+                {
+                }
+                actionref(Imports_Promoted; Imports)
+                {
+                }
+            }
+        }
     }
 }

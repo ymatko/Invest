@@ -31,5 +31,11 @@ pageextension 50101 "PTE Currencies" extends Currencies
                 end;
             }
         }
+        addlast(Promoted)
+        {
+            actionref(PTEImportExchangeRates_Promoted; PTEImportExchangeRates)
+            {
+            }
+        }
     }
 }

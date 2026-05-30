@@ -46,7 +46,7 @@ report 50102 "PTE Import Exchange Rates"
         trigger OnOpenPage()
         begin
             if StartDate = 0D then
-                StartDate := DMY2Date(1, 1, Date2DMY(Today(), 3));
+                StartDate := Today();
             if EndDate = 0D then
                 EndDate := Today();
             ReplaceExisting := true;

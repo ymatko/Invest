@@ -71,7 +71,21 @@ page 50100 "PTE Invest Setup"
                 ApplicationArea = All;
                 Caption = 'Import Exchange Rates';
                 RunObject = report "PTE Import Exchange Rates";
-                ToolTip = 'Import exchange rates by using the source selected on currency cards.';
+                ToolTip = 'Import exchange rates by using the sources selected on currency cards.';
+            }
+        }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(CurrencyExchangeRates_Promoted; CurrencyExchangeRates)
+                {
+                }
+                actionref(ImportFXRates_Promoted; ImportFXRates)
+                {
+                }
             }
         }
     }

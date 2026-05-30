@@ -1365,6 +1365,12 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Card - Action Imports - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 966977130 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Card - Action Category_Process - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1445946180 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Broker Entries</source>
           <target>Zapisy brokera</target>
@@ -1683,6 +1689,12 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Import - Action Revalidate - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 401614041 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Import - Action Category_Process - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 4119916174 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Broker Import Lines</source>
           <target>Wiersze importu raportu brokera</target>
@@ -1959,6 +1971,12 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Brokers - Action Imports - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 2556878427 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Brokers - Action Category_Process - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3528252737 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Instrument Tax Countries</source>
           <target>Kraje podatkowe instrumentów</target>
@@ -2086,14 +2104,14 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Role Center - Action ImportBrokerReport - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 140127671 - Action 1448929310 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import exchange rates by using the source selected on currency cards.</source>
-          <target>Importuje kursy wymiany przy użyciu źródła wybranego na kartach walut.</target>
+          <source>Import or update exchange rates by using the sources selected on currency cards.</source>
+          <target>Importuje lub aktualizuje kursy wymiany przy użyciu źródeł wybranych na kartach walut.</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Role Center - Action ImportFXRates - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 140127671 - Action 1448929310 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import Exchange Rates</source>
-          <target>Importuj kursy wymiany</target>
+          <source>Update Exchange Rates</source>
+          <target>Aktualizuj kursy wymiany</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Role Center - Action ImportFXRates - Property Caption</note>
         </trans-unit>
@@ -2284,8 +2302,8 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Setup - Action CurrencyExchangeRates - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3132900783 - Action 1448929310 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Import exchange rates by using the source selected on currency cards.</source>
-          <target>Importuje kursy wymiany przy użyciu źródła wybranego na kartach walut.</target>
+          <source>Import exchange rates by using the sources selected on currency cards.</source>
+          <target>Importuje kursy wymiany przy użyciu źródeł wybranych na kartach walut.</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Setup - Action ImportFXRates - Property ToolTip</note>
         </trans-unit>
@@ -2294,6 +2312,60 @@
           <target>Importuj kursy wymiany</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Setup - Action ImportFXRates - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3132900783 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Invest Setup - Action Category_Process - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Latest Exchange Rates</source>
+          <target>Najnowsze kursy wymiany</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 3004954119 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the currency code.</source>
+          <target>Określa kod waluty.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the currency description.</source>
+          <target>Określa opis waluty.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 1706339576 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the public source used by Invest to import exchange rates for this currency.</source>
+          <target>Określa publiczne źródło używane przez Invest do importu kursów wymiany dla tej waluty.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control Exchange Rate Source - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 2529139359 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the latest local currency amount for one unit of this currency.</source>
+          <target>Określa najnowszą kwotę w walucie lokalnej dla jednej jednostki tej waluty.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control LatestRateAmount - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 2529139359 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Latest LCY Rate</source>
+          <target>Najnowszy kurs LCY</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control LatestRateAmount - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 975685623 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the latest exchange rate date available for this currency.</source>
+          <target>Określa najnowszą dostępną datę kursu wymiany dla tej waluty.</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control LatestRateDate - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 147640220 - Control 975685623 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Latest Rate Date</source>
+          <target>Data najnowszego kursu</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Latest Exchange Rates - Control LatestRateDate - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 736379510 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>PIT Calculation Lines</source>
@@ -2517,6 +2589,12 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE PIT Calculation - Action ExportPITZG - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3587941823 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE PIT Calculation - Action Category_Process - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1098138730 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>PIT Calculations</source>
           <target>Kalkulacje PIT</target>
@@ -2612,6 +2690,12 @@
           <target>Eksportuj PIT/ZG</target>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE PIT Calculations - Action ExportPITZG - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1098138730 - Action 3383493608 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Process</source>
+          <target>Przetwarzanie</target>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE PIT Calculations - Action Category_Process - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 770410252 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Calculate PIT</source>

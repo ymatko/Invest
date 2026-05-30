@@ -145,5 +145,19 @@ page 50113 "PTE Broker Import"
                 end;
             }
         }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(Revalidate_Promoted; Revalidate)
+                {
+                }
+                actionref(ImportValidLines_Promoted; ImportValidLines)
+                {
+                }
+            }
+        }
     }
 }
