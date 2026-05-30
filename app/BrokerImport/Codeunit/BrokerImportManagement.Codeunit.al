@@ -80,6 +80,7 @@ codeunit 50112 "PTE Broker Import Management"
         GLSetup: Record "General Ledger Setup";
         DuplicateImportLine: Record "PTE Broker Import Line";
         CurrencyFactor: Decimal;
+        ExchangeRateDate: Date;
     begin
         if ImportLine.Status = ImportLine.Status::Imported then
             exit;
@@ -129,7 +130,8 @@ codeunit 50112 "PTE Broker Import Management"
         if ImportLine."Currency Code" <> GLSetup."LCY Code" then begin
             if not Currency.Get(ImportLine."Currency Code") then
                 SetLineError(ImportLine, MissingCurrencyRecordErr);
-            if not CurrencyExchangeRate.CurrencyExchangeRateExist(ImportLine."Currency Code", ImportLine."Trade Date") then
+            ExchangeRateDate := GetExchangeRateDate(ImportLine, ImportLine."Currency Code");
+            if ExchangeRateDate = 0D then
                 SetLineError(ImportLine, MissingExchangeRateErr);
         end;
 
@@ -149,15 +151,34 @@ codeunit 50112 "PTE Broker Import Management"
             ImportLine."LCY Tax Amount" := ImportLine."Tax Amount";
             ImportLine."LCY Net Amount" := ImportLine."Net Amount";
         end else begin
-            CurrencyFactor := CurrencyExchangeRate.ExchangeRate(ImportLine."Trade Date", ImportLine."Currency Code");
+            CurrencyFactor := CurrencyExchangeRate.ExchangeRate(ExchangeRateDate, ImportLine."Currency Code");
             ImportLine."Exchange Rate" := CurrencyFactor;
-            ImportLine."LCY Gross Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ImportLine."Trade Date", ImportLine."Currency Code", ImportLine."Gross Amount", CurrencyFactor);
-            ImportLine."LCY Fee Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ImportLine."Trade Date", ImportLine."Currency Code", ImportLine."Fee Amount", CurrencyFactor);
-            ImportLine."LCY Tax Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ImportLine."Trade Date", ImportLine."Currency Code", ImportLine."Tax Amount", CurrencyFactor);
-            ImportLine."LCY Net Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ImportLine."Trade Date", ImportLine."Currency Code", ImportLine."Net Amount", CurrencyFactor);
+            ImportLine."LCY Gross Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ExchangeRateDate, ImportLine."Currency Code", ImportLine."Gross Amount", CurrencyFactor);
+            ImportLine."LCY Fee Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ExchangeRateDate, ImportLine."Currency Code", ImportLine."Fee Amount", CurrencyFactor);
+            ImportLine."LCY Tax Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ExchangeRateDate, ImportLine."Currency Code", ImportLine."Tax Amount", CurrencyFactor);
+            ImportLine."LCY Net Amount" := CurrencyExchangeRate.ExchangeAmtFCYToLCY(ExchangeRateDate, ImportLine."Currency Code", ImportLine."Net Amount", CurrencyFactor);
         end;
 
         ImportLine.Modify();
+    end;
+
+    local procedure GetExchangeRateDate(ImportLine: Record "PTE Broker Import Line"; CurrencyCode: Code[10]): Date
+    var
+        CurrencyExchangeRate: Record "Currency Exchange Rate";
+        ReferenceDate: Date;
+    begin
+        ReferenceDate := ImportLine."Trade Date";
+        if ImportLine."Settlement Date" <> 0D then
+            ReferenceDate := ImportLine."Settlement Date";
+        if ReferenceDate = 0D then
+            exit(0D);
+
+        CurrencyExchangeRate.SetRange("Currency Code", CurrencyCode);
+        CurrencyExchangeRate.SetFilter("Starting Date", '..%1', CalcDate('<-1D>', ReferenceDate));
+        if CurrencyExchangeRate.FindLast() then
+            exit(CurrencyExchangeRate."Starting Date");
+
+        exit(0D);
     end;
 
     local procedure CreateBrokerEntry(ImportHeader: Record "PTE Broker Import Header"; var ImportLine: Record "PTE Broker Import Line")
@@ -219,13 +240,19 @@ codeunit 50112 "PTE Broker Import Management"
     end;
 
     local procedure SetCountryFromISIN(var ImportLine: Record "PTE Broker Import Line")
+    var
+        Broker: Record "PTE Broker";
     begin
         if ImportLine."Country/Region Code" <> '' then
             exit;
-        if StrLen(ImportLine.ISIN) < 2 then
+        if StrLen(ImportLine.ISIN) >= 2 then begin
+            ImportLine."Country/Region Code" := CopyStr(ImportLine.ISIN, 1, 2);
             exit;
+        end;
 
-        ImportLine."Country/Region Code" := CopyStr(ImportLine.ISIN, 1, 2);
+        if (ImportLine."Transaction Type" = ImportLine."Transaction Type"::Interest) and (ImportLine."Instrument Type" = ImportLine."Instrument Type"::Cash) then
+            if Broker.Get(ImportLine."Broker Code") then
+                ImportLine."Country/Region Code" := Broker."Country/Region Code";
     end;
 
     local procedure SetLineError(var ImportLine: Record "PTE Broker Import Line"; ErrorMessage: Text)
@@ -245,5 +272,5 @@ codeunit 50112 "PTE Broker Import Management"
         DuplicateImportLineErr: Label 'Another line in this import has the same duplicate check key.';
         MissingCurrencyRecordErr: Label 'Currency does not exist in Business Central.';
         MissingPriceCurrencyRecordErr: Label 'Price currency does not exist in Business Central.';
-        MissingExchangeRateErr: Label 'Currency exchange rate does not exist for the trade date.';
+        MissingExchangeRateErr: Label 'Currency exchange rate does not exist for the tax exchange rate date.';
 }

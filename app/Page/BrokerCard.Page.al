@@ -62,7 +62,7 @@ page 50101 "PTE Broker Card"
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the country or region related to the broker.';
+                    ToolTip = 'Specifies the broker country or region used for broker-paid cash interest when no instrument country is available.';
                 }
             }
         }

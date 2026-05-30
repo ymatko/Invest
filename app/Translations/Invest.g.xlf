@@ -824,7 +824,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit PTE Broker Import Management - NamedType MissingDuplicateKeyErr</note>
         </trans-unit>
         <trans-unit id="Codeunit 2909649480 - NamedType 2682615380" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Currency exchange rate does not exist for the trade date.</source>
+          <source>Currency exchange rate does not exist for the tax exchange rate date.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit PTE Broker Import Management - NamedType MissingExchangeRateErr</note>
         </trans-unit>
@@ -959,7 +959,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit PTE PIT Calc. Mgmt. - NamedType MissingBuyCostTxt</note>
         </trans-unit>
         <trans-unit id="Codeunit 588468766 - NamedType 714086480" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code on the broker entry or add a mapping in Instrument Tax Countries. The entry is not included in PIT/ZG country grouping until this is fixed.</source>
+          <source>Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code on the broker entry or broker card. For instruments, you can also add a mapping in Instrument Tax Countries. The entry is not included in PIT/ZG country grouping until this is fixed.</source>
           <note from="Developer" annotates="general" priority="2">%1 = broker entry number, %2 = ticker, %3 = description</note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit PTE PIT Calc. Mgmt. - NamedType MissingCountryNoteTxt</note>
         </trans-unit>
@@ -1074,7 +1074,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Card - Control Base Currency Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 966977130 - Control 284764054 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Specifies the country or region related to the broker.</source>
+          <source>Specifies the broker country or region used for broker-paid cash interest when no instrument country is available.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Broker Card - Control Country/Region Code - Property ToolTip</note>
         </trans-unit>
@@ -1592,6 +1592,11 @@
           <source>Specifies the broker code.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page PTE Brokers - Control Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2556878427 - Control 284764054 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the broker country or region used for broker-paid cash interest when no instrument country is available.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page PTE Brokers - Control Country/Region Code - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 2556878427 - Control 1639155240 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Specifies the import provider that will validate and parse reports for this broker.</source>

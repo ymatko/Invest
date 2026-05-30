@@ -63,7 +63,7 @@ report 50101 "PTE Calculate PIT"
                 StartDate := DMY2Date(1, 1, TaxYear);
             if EndDate = 0D then
                 EndDate := DMY2Date(31, 12, TaxYear);
-            ExportExcel := true;
+            ExportExcel := false;
         end;
     }
 

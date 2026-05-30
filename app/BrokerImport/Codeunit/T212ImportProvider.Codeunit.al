@@ -93,6 +93,7 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
             ParseError := AppendError(ParseError, InvalidTradeDateErr)
         else begin
             ImportLine."Trade Date" := TradeDate;
+            ImportLine."Settlement Date" := GetSettlementDate(Action, TradeDate);
             ImportLine."Tax Year" := Date2DMY(TradeDate, 3);
         end;
 
@@ -137,6 +138,7 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
         SignedTotalAmount: Decimal;
         SignedFeeAmount: Decimal;
         SignedTaxAmount: Decimal;
+        DividendNetAmount: Decimal;
     begin
         SignedTotalAmount := GetSignedTotalAmount(Action, TotalAmount);
         SignedFeeAmount := 0;
@@ -148,17 +150,17 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
         case NormalizeField(Action) of
             'MARKET BUY':
                 begin
-                    ImportLine."Gross Amount" := SignedTotalAmount;
+                    ImportLine."Gross Amount" := SignedTotalAmount - SignedFeeAmount;
                     ImportLine."Fee Amount" := SignedFeeAmount;
                     ImportLine."Tax Amount" := 0;
-                    ImportLine."Net Amount" := SignedTotalAmount + SignedFeeAmount;
+                    ImportLine."Net Amount" := SignedTotalAmount;
                 end;
             'MARKET SELL':
                 begin
-                    ImportLine."Gross Amount" := SignedTotalAmount;
+                    ImportLine."Gross Amount" := SignedTotalAmount - SignedFeeAmount;
                     ImportLine."Fee Amount" := SignedFeeAmount;
                     ImportLine."Tax Amount" := 0;
-                    ImportLine."Net Amount" := SignedTotalAmount + SignedFeeAmount;
+                    ImportLine."Net Amount" := SignedTotalAmount;
                 end;
             'CURRENCY CONVERSION':
                 begin
@@ -170,9 +172,21 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
                 end;
             'DIVIDEND (DIVIDEND)':
                 begin
-                    ImportLine."Gross Amount" := SignedTotalAmount;
+                    if ImportLine."Price Currency Code" <> '' then
+                        ImportLine."Currency Code" := ImportLine."Price Currency Code";
+                    if TaxCurrencyCode <> '' then
+                        ImportLine."Currency Code" := TaxCurrencyCode;
+                    SignedTaxAmount := ConvertWithholdingTax(TaxAmount, FileExchangeRate, ImportLine."Currency Code", TaxCurrencyCode);
+                    DividendNetAmount := Abs(ImportLine.Quantity * ImportLine.Price);
+                    if DividendNetAmount = 0 then
+                        if (FileExchangeRate <> 0) and (TotalCurrencyCode <> ImportLine."Currency Code") then
+                            DividendNetAmount := Abs(TotalAmount / FileExchangeRate)
+                        else
+                            DividendNetAmount := Abs(TotalAmount);
+
+                    ImportLine."Gross Amount" := DividendNetAmount + Abs(SignedTaxAmount);
                     ImportLine."Tax Amount" := SignedTaxAmount;
-                    ImportLine."Net Amount" := SignedTotalAmount;
+                    ImportLine."Net Amount" := DividendNetAmount;
                 end;
             else begin
                 ImportLine."Gross Amount" := SignedTotalAmount;
@@ -218,6 +232,22 @@ codeunit 50115 "PTE T212 Import Provider" implements "PTE Broker Report Provider
             exit(FeeCurrencyCode);
 
         exit(BrokerBaseCurrencyCode);
+    end;
+
+    local procedure GetSettlementDate(Action: Text; TradeDate: Date): Date
+    var
+        SettlementDate: Date;
+    begin
+        if TradeDate = 0D then
+            exit(0D);
+        if not (NormalizeField(Action) in ['MARKET BUY', 'MARKET SELL']) then
+            exit(0D);
+
+        SettlementDate := CalcDate('<+1D>', TradeDate);
+        while Date2DWY(SettlementDate, 1) in [6, 7] do
+            SettlementDate := CalcDate('<+1D>', SettlementDate);
+
+        exit(SettlementDate);
     end;
 
     local procedure ParseCsvLine(LineText: Text; var CsvFields: List of [Text])

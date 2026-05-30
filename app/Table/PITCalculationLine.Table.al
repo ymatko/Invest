@@ -43,7 +43,7 @@ table 50121 "PTE PIT Calc. Line"
         {
             Caption = 'Text Value';
         }
-        field(80; Note; Text[250])
+        field(80; Note; Text[2048])
         {
             Caption = 'Note';
         }

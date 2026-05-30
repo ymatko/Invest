@@ -28,6 +28,11 @@ page 50102 "PTE Brokers"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the broker base currency.';
                 }
+                field("Country/Region Code"; Rec."Country/Region Code")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the broker country or region used for broker-paid cash interest when no instrument country is available.';
+                }
                 field("Import Provider Code"; Rec."Import Provider Code")
                 {
                     ApplicationArea = All;

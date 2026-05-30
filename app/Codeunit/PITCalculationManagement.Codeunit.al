@@ -100,8 +100,8 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         PITCalculation."Flat Tax Due" := FlatTaxDue;
         PITCalculation."Tax Due" := TotalTaxDue;
         PITCalculation."Warning Count" := WarningCount;
-        PITCalculation."PIT-ZG Countries" := CountryIncome.Count();
-        PITCalculation."PIT-ZG Required" := CountryIncome.Count() > 0;
+        PITCalculation."PIT-ZG Countries" := CountPITZGCountries(CountryIncome);
+        PITCalculation."PIT-ZG Required" := PITCalculation."PIT-ZG Countries" > 0;
         PITCalculation.Status := PITCalculation.Status::Calculated;
         PITCalculation.Modify();
 
@@ -125,7 +125,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
                     InsertLine(PITCalculation, 900000 + WarningCount, "PTE PIT Calc. Line Type"::Warning, 'CHECK', '', '', StrSubstNo(MissingCountryTxt, BrokerEntry."Entry No."), 0, BrokerEntry.Ticker, StrSubstNo(MissingCountryNoteTxt, BrokerEntry."Entry No.", BrokerEntry.Ticker, BrokerEntry.Description));
                 end else
                     if CountryCode <> TaxCountryCode then begin
-                        TaxableAmount := Abs(BrokerEntry."LCY Gross Amount") + Abs(BrokerEntry."LCY Tax Amount");
+                        TaxableAmount := Abs(BrokerEntry."LCY Gross Amount");
                         FlatTaxableIncome += TaxableAmount;
                         FlatForeignTaxPaid += Abs(BrokerEntry."LCY Tax Amount");
                         SourceEntryCount += 1;
@@ -329,6 +329,9 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         LineNo: Integer;
     begin
         foreach CountryCode in CountryIncome.Keys() do begin
+            if RoundPositive(CountryIncome.Get(CountryCode)) = 0 then
+                continue;
+
             CountryNo += 1;
             LineNo := 300000 + (CountryNo * 10000);
             InsertLine(PITCalculation, LineNo + 1000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '6', 'Państwo uzyskania dochodu / przychodu', 0, CountryCode, 'Separate PIT/ZG attachment for this country');
@@ -337,6 +340,18 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
             InsertLine(PITCalculation, LineNo + 4000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '31', 'Dochód, o którym mowa w art. 30b ust. 5e i 5f ustawy', 0, '', 'Not calculated by this report');
             InsertLine(PITCalculation, LineNo + 5000, "PTE PIT Calc. Line Type"::PITZG, 'PIT/ZG', CountryCode, '32', 'Podatek zapłacony za granicą od dochodów z poz. 31', 0, '', 'Not calculated by this report');
         end;
+    end;
+
+    local procedure CountPITZGCountries(CountryIncome: Dictionary of [Code[10], Decimal]): Integer
+    var
+        CountryCode: Code[10];
+        CountryCount: Integer;
+    begin
+        foreach CountryCode in CountryIncome.Keys() do
+            if RoundPositive(CountryIncome.Get(CountryCode)) <> 0 then
+                CountryCount += 1;
+
+        exit(CountryCount);
     end;
 
     local procedure ExportLinesToExcel(PITCalculation: Record "PTE PIT Calculation"; var PITCalcLine: Record "PTE PIT Calc. Line"; SheetName: Text[250]; FileName: Text)
@@ -422,7 +437,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         TempExcelBuffer.AddColumn('Note', false, '', true, false, false, '', TempExcelBuffer."Cell Type"::Text);
     end;
 
-    local procedure InsertLine(PITCalculation: Record "PTE PIT Calculation"; LineNo: Integer; LineType: Enum "PTE PIT Calc. Line Type"; FormName: Code[20]; CountryCode: Code[10]; FieldNo: Code[20]; FieldCaption: Text[250]; Amount: Decimal; TextValue: Text[250]; Note: Text[250])
+    local procedure InsertLine(PITCalculation: Record "PTE PIT Calculation"; LineNo: Integer; LineType: Enum "PTE PIT Calc. Line Type"; FormName: Code[20]; CountryCode: Code[10]; FieldNo: Code[20]; FieldCaption: Text[250]; Amount: Decimal; TextValue: Text[250]; Note: Text[2048])
     var
         PITCalcLine: Record "PTE PIT Calc. Line";
     begin
@@ -458,6 +473,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
 
     local procedure GetInstrumentKey(BrokerEntry: Record "PTE Broker Entry"): Text
     var
+        InstrumentTaxCountry: Record "PTE Instrument Tax Country";
         RelatedISIN: Code[20];
     begin
         if BrokerEntry.ISIN <> '' then
@@ -465,14 +481,23 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         RelatedISIN := GetISINFromOtherEntries(BrokerEntry);
         if RelatedISIN <> '' then
             exit(RelatedISIN);
-        if BrokerEntry.Ticker <> '' then
+        if BrokerEntry.Ticker <> '' then begin
+            if InstrumentTaxCountry.Get(BrokerEntry."Broker Code", BrokerEntry.Ticker) then
+                if InstrumentTaxCountry.ISIN <> '' then
+                    exit(InstrumentTaxCountry.ISIN);
+            if InstrumentTaxCountry.Get('', BrokerEntry.Ticker) then
+                if InstrumentTaxCountry.ISIN <> '' then
+                    exit(InstrumentTaxCountry.ISIN);
+
             exit(BrokerEntry.Ticker);
+        end;
 
         exit(BrokerEntry.Description);
     end;
 
     local procedure GetEntryCountryCode(BrokerEntry: Record "PTE Broker Entry"): Code[10]
     var
+        Broker: Record "PTE Broker";
         InstrumentTaxCountry: Record "PTE Instrument Tax Country";
         CountryCode: Code[10];
     begin
@@ -485,10 +510,23 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
             exit(CountryCode);
         if BrokerEntry.Ticker <> '' then begin
             if InstrumentTaxCountry.Get(BrokerEntry."Broker Code", BrokerEntry.Ticker) then
-                exit(InstrumentTaxCountry."Country/Region Code");
+                exit(GetCountryFromInstrumentTaxCountry(InstrumentTaxCountry));
             if InstrumentTaxCountry.Get('', BrokerEntry.Ticker) then
-                exit(InstrumentTaxCountry."Country/Region Code");
+                exit(GetCountryFromInstrumentTaxCountry(InstrumentTaxCountry));
         end;
+        if (BrokerEntry."Transaction Type" = BrokerEntry."Transaction Type"::Interest) and (BrokerEntry."Instrument Type" = BrokerEntry."Instrument Type"::Cash) then
+            if Broker.Get(BrokerEntry."Broker Code") then
+                exit(Broker."Country/Region Code");
+
+        exit('');
+    end;
+
+    local procedure GetCountryFromInstrumentTaxCountry(InstrumentTaxCountry: Record "PTE Instrument Tax Country"): Code[10]
+    begin
+        if InstrumentTaxCountry."Country/Region Code" <> '' then
+            exit(InstrumentTaxCountry."Country/Region Code");
+        if StrLen(InstrumentTaxCountry.ISIN) >= 2 then
+            exit(CopyStr(InstrumentTaxCountry.ISIN, 1, 2));
 
         exit('');
     end;
@@ -539,7 +577,7 @@ codeunit 50116 "PTE PIT Calc. Mgmt."
         InvalidPeriodErr: Label 'Period start date cannot be later than period end date.';
         MissingBuyCostTxt: Label 'Missing acquisition cost for %1', Comment = '%1 = instrument key';
         MissingCountryTxt: Label 'Missing tax country for broker entry %1', Comment = '%1 = broker entry number';
-        MissingCountryNoteTxt: Label 'Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code on the broker entry or add a mapping in Instrument Tax Countries. The entry is not included in PIT/ZG country grouping until this is fixed.', Comment = '%1 = broker entry number, %2 = ticker, %3 = description';
+        MissingCountryNoteTxt: Label 'Country cannot be determined for broker entry %1, ticker %2, description %3. Fill Country/Region Code on the broker entry or broker card. For instruments, you can also add a mapping in Instrument Tax Countries. The entry is not included in PIT/ZG country grouping until this is fixed.', Comment = '%1 = broker entry number, %2 = ticker, %3 = description';
         UnmatchedQuantityTxt: Label 'Not enough buy quantity was found for %1. Unmatched quantity: %2. Sell broker entry: %3, trade date: %4. Import the missing buy transaction or correct the broker entry before relying on the PIT result.', Comment = '%1 = instrument key, %2 = unmatched quantity, %3 = broker entry number, %4 = trade date';
         PITArchiveFileNameTxt: Label 'PIT_%1_%2.zip', Comment = '%1 = tax year, %2 = PIT calculation entry number';
         PIT38FileNameTxt: Label 'PIT-38_%1_%2', Comment = '%1 = tax year, %2 = PIT calculation entry number';
